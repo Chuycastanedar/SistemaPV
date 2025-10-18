@@ -1,8 +1,20 @@
-# Visual Studio cache
+# Visual Studio
 .vs/
 *.suo
 *.user
+*.sln.docstates
 
 # Build results
 [Bb]in/
 [Oo]bj/
+TestResults/
+
+# .NET Framework Packages
+packages/
+
+# Files built by Visual Studio
+*.cache
+*.exe
+*.dll
+*.pdb
+*.vshost.*
