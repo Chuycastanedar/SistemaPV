@@ -111,7 +111,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+<<<<<<< HEAD
     <None Include="packages.config" />
+=======
+    <None Include="App.config.template" />
+>>>>>>> c39df613ee94d4b2af58b302ee8642d65563aa10
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
