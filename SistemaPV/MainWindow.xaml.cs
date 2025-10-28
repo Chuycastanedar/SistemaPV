@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient; // Para conectar con SQL Server
+using System.Configuration;   // Para leer el App.config
 
 namespace SistemaPV
 {

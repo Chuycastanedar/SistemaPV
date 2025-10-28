@@ -1,13 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\chuyc\\OneDrive\\Escritorio\\SistemaPV\\",
+  "WorkspaceRootPath": "Z:\\SISTEMA\\SistemaPV\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|c:\\users\\chuyc\\onedrive\\escritorio\\sistemapv\\sistemapv\\view\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|Z:\\SISTEMA\\SistemaPV\\sistemapv\\view\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|solutionrelative:sistemapv\\view\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|C:\\Users\\chuyc\\OneDrive\\Escritorio\\SistemaPV\\sistemapv\\view\\loginview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|z:\\sistema\\sistemapv\\sistemapv\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|solutionrelative:sistemapv\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|Z:\\SISTEMA\\SistemaPV\\sistemapv\\view\\loginview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{966890A2-8BBD-4D4D-A2EE-0ECF41CC5068}|SistemaPV\\SistemaPV.csproj|solutionrelative:sistemapv\\view\\loginview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 146,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,11 +30,23 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.xaml",
+              "DocumentMoniker": "Z:\\SISTEMA\\SistemaPV\\SistemaPV\\App.xaml",
+              "RelativeDocumentMoniker": "SistemaPV\\App.xaml",
+              "ToolTip": "Z:\\SISTEMA\\SistemaPV\\SistemaPV\\App.xaml",
+              "RelativeToolTip": "SistemaPV\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-22T20:43:11.301Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "LoginView.xaml",
-              "DocumentMoniker": "C:\\Users\\chuyc\\OneDrive\\Escritorio\\SistemaPV\\SistemaPV\\View\\LoginView.xaml",
+              "DocumentMoniker": "Z:\\SISTEMA\\SistemaPV\\SistemaPV\\View\\LoginView.xaml",
               "RelativeDocumentMoniker": "SistemaPV\\View\\LoginView.xaml",
-              "ToolTip": "C:\\Users\\chuyc\\OneDrive\\Escritorio\\SistemaPV\\SistemaPV\\View\\LoginView.xaml",
+              "ToolTip": "Z:\\SISTEMA\\SistemaPV\\SistemaPV\\View\\LoginView.xaml",
               "RelativeToolTip": "SistemaPV\\View\\LoginView.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-10-07T07:24:29.464Z",
@@ -38,11 +54,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "View\\LoginView.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\chuyc\\OneDrive\\Escritorio\\SistemaPV\\SistemaPV\\View\\LoginView.xaml.cs",
+              "DocumentMoniker": "Z:\\SISTEMA\\SistemaPV\\SistemaPV\\View\\LoginView.xaml.cs",
               "RelativeDocumentMoniker": "SistemaPV\\View\\LoginView.xaml.cs",
-              "ToolTip": "C:\\Users\\chuyc\\OneDrive\\Escritorio\\SistemaPV\\SistemaPV\\View\\LoginView.xaml.cs",
+              "ToolTip": "Z:\\SISTEMA\\SistemaPV\\SistemaPV\\View\\LoginView.xaml.cs",
               "RelativeToolTip": "SistemaPV\\View\\LoginView.xaml.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAowC8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
