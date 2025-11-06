@@ -34,9 +34,9 @@
 
         <StackPanel x:Name="panelBotonesUsuarios" Grid.Column="2" Background="#FF4A4AFF" Margin="5"
                     Visibility="Collapsed">
-            <Button x:Name="btnAgregarUsuario" Content="Agregar Usuario" Margin="10" Padding="10"/>
-            <Button x:Name="btnEliminarUsuario" Content="Eliminar Usuario" Margin="10" Padding="10"/>
-            <Button x:Name="btnEditarUsuario" Content="Editar Usuario" Margin="10" Padding="10"/>
+            <Button x:Name="btnAgregarUsuario" Content="Agregar Usuario" Margin="10" Padding="10" Click="BtnAgregarUsuario_Click"/>
+            <Button x:Name="btnEliminarUsuario" Content="Eliminar Usuario" Margin="10" Padding="10" Click="BtnEliminarUsuario_Click"/>
+            <Button x:Name="btnEditarUsuario" Content="Editar Usuario" Margin="10" Padding="10" Click="BtnEditarUsuario_Click"/> 
         </StackPanel>
 
         <DataGrid x:Name="dgvInventario" Grid.Column="1" Margin="5,5,195,5"

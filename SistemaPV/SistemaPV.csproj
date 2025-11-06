@@ -62,6 +62,9 @@
     <Compile Include="View\AgregarProductoWindow.xaml.cs">
       <DependentUpon>AgregarProductoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AgregarUsuarioWindow.xaml.cs">
+      <DependentUpon>AgregarUsuarioWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\InventarioWindow.xaml.cs">
       <DependentUpon>InventarioWindow.xaml</DependentUpon>
     </Compile>
@@ -81,6 +84,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\AgregarProductoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AgregarUsuarioWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
