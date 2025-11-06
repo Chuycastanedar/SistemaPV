@@ -25,7 +25,7 @@ namespace SistemaPV.View
             {
                 string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
 
-               
+
                 string query = "SELECT ID_PRODUCTO, NOMBRE_PRODUCTO, PRECIO, CANTIDAD_STOCK, DESCRIPCION FROM PRODUCTO";
 
                 DataTable dtProductos = new DataTable();

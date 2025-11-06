@@ -64,7 +64,7 @@ namespace SistemaPV.View
             string nombre = txtNombre.Text;
             string nombreUsuario = txtNombreUsuario.Text;
             int idRol = (int)cmbRol.SelectedValue;
-            byte[] passwordHash = CalcularHash(txtPassword.Password);
+            string passwordPlana = txtPassword.Password;
 
             try
             {
@@ -80,7 +80,7 @@ namespace SistemaPV.View
                         command.Parameters.AddWithValue("@aMaterno", (object)aMaterno ?? DBNull.Value);
                         command.Parameters.AddWithValue("@nombre", nombre);
                         command.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
-                        command.Parameters.AddWithValue("@passwordHash", passwordHash);
+                        command.Parameters.AddWithValue("@passwordHash", passwordPlana);
                         command.Parameters.AddWithValue("@idRol", idRol);
 
                         connection.Open();
@@ -269,14 +269,5 @@ namespace SistemaPV.View
             this.Close();
         }
 
-        // Método HELPER para calcular el HASH 
-        private byte[] CalcularHash(string password)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                // Usamos Encoding.Unicode porque el script SQL usa N'...' (NVARCHAR)
-                return sha256.ComputeHash(Encoding.Unicode.GetBytes(password));
-            }
-        }
     }
 }
