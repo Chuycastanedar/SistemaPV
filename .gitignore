@@ -19,4 +19,7 @@ packages/
 *.pdb
 *.vshost.*
 
+# Ignorar configuraciones locales de desarrollador
+**/App.config
+
 *.log
