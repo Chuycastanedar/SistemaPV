@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-Z:\SISTEMA\SistemaPV\SistemaPV\obj\Debug\
+C:\Users\chuyc\OneDrive\Escritorio\SistemaPV\SistemaPV\obj\Debug\
 SistemaPV
 none
 false
 DEBUG;TRACE
-Z:\SISTEMA\SistemaPV\SistemaPV\App.xaml
-41100942312
+C:\Users\chuyc\OneDrive\Escritorio\SistemaPV\SistemaPV\App.xaml
+2-558252558
 
-81907292410
-15-896086209
-MainWindow.xaml;View\AgregarProductoWindow.xaml;View\Inventario.Window.xaml;View\LoginView.xaml;
+6912368988
+13-1310406943
+MainWindow.xaml;View\LoginView.xaml;
 
 False
 
