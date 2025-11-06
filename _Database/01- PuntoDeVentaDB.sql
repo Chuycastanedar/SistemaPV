@@ -80,7 +80,7 @@ CREATE TABLE USUARIO (
     AMATERNO NVARCHAR(50) NULL, -- Apellido materno puede ser opcional
     NOMBRE NVARCHAR(50) NOT NULL,
     NOMBRE_USUARIO NVARCHAR(50) NOT NULL UNIQUE,
-    PASSWORD_HASH NVARCHAR(MAX) NOT NULL, -- NVARCHAR(MAX) para guardar hashes modernos
+    PASSWORD_HASH NVARCHAR(50) NOT NULL,
     FECHA_CREACION DATE NOT NULL DEFAULT GETDATE(), -- Se auto-asigna la fecha actual
     ID_ROL INT NOT NULL,
     
@@ -185,10 +185,7 @@ BEGIN
             'Sistema',  -- AMATERNO (o puedes poner 'Admin' también)
             'Administrador', -- NOMBRE
             'admin',    -- NOMBRE_USUARIO
-            
-            -- ¡IMPORTANTE! Hacemos HASH de la contraseña 'admin'
-            -- Usamos el algoritmo SHA2_256. 
-            HASHBYTES('SHA2_256', N'admin'), -- PASSWORD_HASH 
+            'admin', -- PASSWORD_HASH 
             
             -- Buscamos el ID_ROL del 'Administrador' dinámicamente
             (SELECT ID_ROL FROM ROL WHERE NOMBRE_ROL = 'Administrador')
