@@ -23,7 +23,8 @@
             <RadioButton Content="Administrar Usuarios" GroupName="Navegacion" Margin="10,5"
                          Checked="RbUsuarios_Checked"/>
 
-            <Button Content="Cerrar sesión" VerticalAlignment="Bottom" Margin="10" Padding="5"/>
+            <Button Content="Cerrar sesión" VerticalAlignment="Bottom" Margin="10" Padding="5"
+                    Click="BtnCerrarSesion_Click"/>
         </StackPanel>
 
         <StackPanel x:Name="panelBotonesProductos" Grid.Column="2" Background="#FF4A4AFF" Margin="5">
@@ -36,7 +37,7 @@
                     Visibility="Collapsed">
             <Button x:Name="btnAgregarUsuario" Content="Agregar Usuario" Margin="10" Padding="10" Click="BtnAgregarUsuario_Click"/>
             <Button x:Name="btnEliminarUsuario" Content="Eliminar Usuario" Margin="10" Padding="10" Click="BtnEliminarUsuario_Click"/>
-            <Button x:Name="btnEditarUsuario" Content="Editar Usuario" Margin="10" Padding="10" Click="BtnEditarUsuario_Click"/> 
+            <Button x:Name="btnEditarUsuario" Content="Editar Usuario" Margin="10" Padding="10" Click="BtnEditarUsuario_Click"/>
         </StackPanel>
 
         <DataGrid x:Name="dgvInventario" Grid.Column="1" Margin="5,5,195,5"

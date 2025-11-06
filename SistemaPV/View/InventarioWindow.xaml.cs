@@ -71,7 +71,7 @@ namespace SistemaPV.View
 
             DataRowView rowView = (DataRowView)itemSeleccionado;
 
-           
+
             int idParaEliminar = (int)rowView["ID_PRODUCTO"];
             string nombreProducto = rowView["NOMBRE_PRODUCTO"].ToString();
 
@@ -90,7 +90,7 @@ namespace SistemaPV.View
             {
                 string connectionString = ConfigurationManager.ConnectionStrings["MiConexion"].ConnectionString;
 
-                
+
                 string query = "DELETE FROM PRODUCTO WHERE ID_PRODUCTO = @id";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -133,7 +133,7 @@ namespace SistemaPV.View
 
             DataRowView rowView = (DataRowView)itemSeleccionado;
 
-           
+
             AgregarProductoWindow formEditar = new AgregarProductoWindow(rowView);
 
             bool? resultado = formEditar.ShowDialog();
@@ -199,7 +199,7 @@ namespace SistemaPV.View
                                 "Error de Conexión", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+
 
         private void BtnAgregarUsuario_Click(object sender, RoutedEventArgs e)
         {
@@ -214,7 +214,7 @@ namespace SistemaPV.View
                 CargarUsuarios();
             }
         }
-        
+
 
         private void BtnEliminarUsuario_Click(object sender, RoutedEventArgs e)
         {
@@ -234,7 +234,7 @@ namespace SistemaPV.View
             string nombreUsuario = rowView["NOMBRE_USUARIO"].ToString();
 
             // 3. Comprobación de seguridad crítica
-            
+
             if (nombreUsuario.Equals("admin", StringComparison.OrdinalIgnoreCase))
             {
                 MessageBox.Show("No se puede eliminar al usuario administrador principal.",
@@ -285,7 +285,7 @@ namespace SistemaPV.View
                                 "Error de Base de Datos", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+
 
         private void BtnEditarUsuario_Click(object sender, RoutedEventArgs e)
         {
@@ -302,7 +302,7 @@ namespace SistemaPV.View
             DataRowView rowView = (DataRowView)itemSeleccionado;
 
             // 2. Abrir la ventana de edición USANDO EL NUEVO CONSTRUCTOR
-            
+
             AgregarUsuarioWindow formEditar = new AgregarUsuarioWindow(rowView);
 
             // 3. Mostrar como diálogo y refrescar si el resultado es "true"
@@ -311,6 +311,21 @@ namespace SistemaPV.View
             if (resultado == true)
             {
                 CargarUsuarios();
+            }
+        }
+
+        // --- CERRAR SESIÓN ---
+        private void BtnCerrarSesion_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("¿Estás seguro de que deseas cerrar sesión?",
+                                                     "Cerrar Sesión",
+                                                     MessageBoxButton.YesNo,
+                                                     MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                // Cerrar la aplicación completamente
+                Application.Current.Shutdown();
             }
         }
     }
