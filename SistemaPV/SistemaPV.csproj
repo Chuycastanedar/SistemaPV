@@ -115,5 +115,8 @@
   <ItemGroup>
     <Resource Include="Images\Titulo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config.template" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
