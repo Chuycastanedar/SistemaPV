@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SistemaPV.View"
         mc:Ignorable="d"
-        Title="Inventario" Height="450" Width="900">
+        Title="Inventario" 
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -15,8 +17,8 @@
 
         <StackPanel Grid.Column="0" Background="#FFEAEAEA" Margin="5">
             <Label Content="SISTEMA: PUNTO DE VENTA" FontWeight="Bold" Margin="5"/>
-            <Label Content="Usuario: admin" Margin="5,0,5,0"/>
-            <Label Content="Administrador" FontWeight="Bold" Margin="5,0,5,20"/>
+            <Label Content="Usuario : Administrador" FontWeight="Bold" Margin="5,0,5,0"/>
+            
 
             <RadioButton Content="Inventario" IsChecked="True" GroupName="Navegacion" Margin="10,5"
                          Checked="RbInventario_Checked"/>

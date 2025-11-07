@@ -28,13 +28,13 @@
         </Grid.RowDefinitions>
 
         <Label Content="Nombre:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtNombre" Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtNombre" Grid.Row="0" Grid.Column="1" Margin="5" MaxLength="50" PreviewTextInput="TxtSoloLetras_PreviewTextInput"/>
 
         <Label Content="Apellido Paterno:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtAPaterno" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtAPaterno" Grid.Row="1" Grid.Column="1" Margin="5" MaxLength="50" PreviewTextInput="TxtSoloLetras_PreviewTextInput"/>
 
         <Label Content="Apellido Materno:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtAMaterno" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtAMaterno" Grid.Row="2" Grid.Column="1" Margin="5" MaxLength="50" PreviewTextInput="TxtSoloLetras_PreviewTextInput"/>
 
         <Label Content="Rol de Usuario:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
         <ComboBox x:Name="cmbRol" Grid.Row="3" Grid.Column="1" Margin="5"/>
@@ -42,20 +42,20 @@
 
 
         <Label Content="Nombre de Usuario:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtNombreUsuario" Grid.Row="5" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtNombreUsuario" Grid.Row="5" Grid.Column="1" Margin="5" MaxLength="50" PreviewTextInput="TxtNombreUsuario_PreviewTextInput"/>
 
         <Label x:Name="lblPassword" Content="Contraseña:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <PasswordBox x:Name="txtPassword" Grid.Row="6" Grid.Column="1" Margin="5"/>
+        <PasswordBox x:Name="txtPassword" Grid.Row="6" Grid.Column="1" Margin="5" MaxLength="50"/>
 
         <Label x:Name="lblPasswordConfirm" Content="Confirmar Contraseña:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <PasswordBox x:Name="txtPasswordConfirm" Grid.Row="7" Grid.Column="1" Margin="5"/>
+        <PasswordBox x:Name="txtPasswordConfirm" Grid.Row="7" Grid.Column="1" Margin="5" MaxLength="50"/>
 
         <StackPanel Grid.Row="8" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
             <Button x:Name="btnGuardar" Content="Guardar" Width="80" Margin="5" Padding="5" Click="BtnGuardar_Click" IsDefault="True"/>
             <Button x:Name="btnCancelar" Content="Cancelar" Width="80" Margin="5" Padding="5" Click="BtnCancelar_Click" IsCancel="True"/>
         </StackPanel>
-        
-        
+
+
 
     </Grid>
 </Window>

@@ -5,8 +5,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography; // Para el HASH
 using System.Text; // Para el HASH
+using System.Text.RegularExpressions; // Para validaciones con regex
 using System.Windows;
 using System.Windows.Controls; // Para el ComboBox
+using System.Windows.Input;
 
 namespace SistemaPV.View
 {
@@ -25,39 +27,84 @@ namespace SistemaPV.View
         {
             InitializeComponent();
 
-            // 1. Guardar los IDs
-            this.usuarioId = (int)usuarioAEditar["ID_USUARIO"];
-            this.idRolAEditar = (int)usuarioAEditar["ID_ROL"];
+            try
+            {
+                // 1. Guardar los IDs - CON VERIFICACIÓN DE COLUMNAS
+                this.usuarioId = usuarioAEditar["ID_USUARIO"] != DBNull.Value ? (int)usuarioAEditar["ID_USUARIO"] : (int?)null;
 
-            // 2. Rellenar los campos de texto
-            txtNombre.Text = usuarioAEditar["NOMBRE"].ToString();
-            txtAPaterno.Text = usuarioAEditar["APATERNO"].ToString();
-            txtAMaterno.Text = usuarioAEditar["AMATERNO"].ToString();
-            txtNombreUsuario.Text = usuarioAEditar["NOMBRE_USUARIO"].ToString();
+                // Verificar si la columna ID_ROL existe antes de acceder a ella
+                if (usuarioAEditar.Row.Table.Columns.Contains("ID_ROL"))
+                {
+                    this.idRolAEditar = usuarioAEditar["ID_ROL"] != DBNull.Value ? (int)usuarioAEditar["ID_ROL"] : (int?)null;
+                }
 
-            // 3. Cambiar la UI para el modo "Editar"
+                // 2. Rellenar los campos de texto - CON VERIFICACIÓN DE COLUMNAS
+                if (usuarioAEditar.Row.Table.Columns.Contains("NOMBRE"))
+                    txtNombre.Text = usuarioAEditar["NOMBRE"]?.ToString() ?? "";
 
+                if (usuarioAEditar.Row.Table.Columns.Contains("APATERNO"))
+                    txtAPaterno.Text = usuarioAEditar["APATERNO"]?.ToString() ?? "";
 
-            txtNombreUsuario.IsEnabled = false;
+                if (usuarioAEditar.Row.Table.Columns.Contains("AMATERNO"))
+                    txtAMaterno.Text = usuarioAEditar["AMATERNO"]?.ToString() ?? "";
 
-            // Ocultar los campos de contraseña
-            lblPassword.Visibility = Visibility.Collapsed;
-            txtPassword.Visibility = Visibility.Collapsed;
-            rowPassword.Height = new GridLength(0); // Colapsa la fila
+                if (usuarioAEditar.Row.Table.Columns.Contains("NOMBRE_USUARIO"))
+                    txtNombreUsuario.Text = usuarioAEditar["NOMBRE_USUARIO"]?.ToString() ?? "";
 
-            lblPasswordConfirm.Visibility = Visibility.Collapsed;
-            txtPasswordConfirm.Visibility = Visibility.Collapsed;
-            rowPasswordConfirm.Height = new GridLength(0); // Colapsa la fila
+                // 3. Cambiar la UI para el modo "Editar"
+                txtNombreUsuario.IsEnabled = false;
 
-            // Cambiar títulos
-            this.Title = "Editar Usuario";
-            btnGuardar.Content = "Actualizar";
+                // Ocultar los campos de contraseña
+                lblPassword.Visibility = Visibility.Collapsed;
+                txtPassword.Visibility = Visibility.Collapsed;
+                rowPassword.Height = new GridLength(0); // Colapsa la fila
+
+                lblPasswordConfirm.Visibility = Visibility.Collapsed;
+                txtPasswordConfirm.Visibility = Visibility.Collapsed;
+                rowPasswordConfirm.Height = new GridLength(0); // Colapsa la fila
+
+                // Cambiar títulos
+                this.Title = "Editar Usuario";
+                btnGuardar.Content = "Actualizar";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar datos del usuario: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+            }
         }
-           
+
+        // Validar que solo se ingresen letras y espacios en nombres y apellidos
+        private void TxtSoloLetras_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Permitir solo letras y espacios
+            foreach (char c in e.Text)
+            {
+                if (!char.IsLetter(c) && c != ' ')
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
+
+        // Validar nombre de usuario (solo letras, números, guiones y puntos)
+        private void TxtNombreUsuario_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Permitir solo letras, números, guiones, puntos y underscores
+            foreach (char c in e.Text)
+            {
+                if (!char.IsLetterOrDigit(c) && c != '-' && c != '.' && c != '_')
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
+        }
 
         private void GuardarNuevoUsuario()
         {
-            
+
 
             string aPaterno = txtAPaterno.Text;
             string aMaterno = string.IsNullOrEmpty(txtAMaterno.Text) ? null : txtAMaterno.Text;
@@ -150,7 +197,7 @@ namespace SistemaPV.View
                 throw ex; // Relanzamos la excepción
             }
         }
-        
+
 
         //  PASO 1: Cargar los Roles en el ComboBox 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -181,8 +228,8 @@ namespace SistemaPV.View
 
                 // Configuramos el ComboBox
                 cmbRol.ItemsSource = dtRoles.DefaultView;
-                cmbRol.DisplayMemberPath = "NOMBRE_ROL"; 
-                cmbRol.SelectedValuePath = "ID_ROL";     
+                cmbRol.DisplayMemberPath = "NOMBRE_ROL";
+                cmbRol.SelectedValuePath = "ID_ROL";
 
                 // Seleccionar el primer rol por defecto si existe
                 if (cmbRol.Items.Count > 0)
@@ -207,6 +254,38 @@ namespace SistemaPV.View
                 return;
             }
 
+            // Validar longitud de campos
+            if (txtNombre.Text.Length > 50)
+            {
+                MessageBox.Show("El nombre no puede tener más de 50 caracteres.", "Error de longitud", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (txtAPaterno.Text.Length > 50)
+            {
+                MessageBox.Show("El apellido paterno no puede tener más de 50 caracteres.", "Error de longitud", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (txtAMaterno.Text.Length > 50)
+            {
+                MessageBox.Show("El apellido materno no puede tener más de 50 caracteres.", "Error de longitud", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (txtNombreUsuario.Text.Length > 50)
+            {
+                MessageBox.Show("El nombre de usuario no puede tener más de 50 caracteres.", "Error de longitud", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Validar que el nombre de usuario no tenga caracteres inválidos
+            if (!Regex.IsMatch(txtNombreUsuario.Text, @"^[a-zA-Z0-9._-]+$"))
+            {
+                MessageBox.Show("El nombre de usuario solo puede contener letras, números, puntos, guiones y underscores.", "Caracteres inválidos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             // Si estamos en modo "Agregar", también validamos las contraseñas
             if (this.usuarioId == null)
             {
@@ -215,6 +294,13 @@ namespace SistemaPV.View
                     MessageBox.Show("La contraseña es obligatoria.", "Campos vacíos", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+
+                if (txtPassword.Password.Length > 50)
+                {
+                    MessageBox.Show("La contraseña no puede tener más de 50 caracteres.", "Error de longitud", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (txtPassword.Password != txtPasswordConfirm.Password)
                 {
                     MessageBox.Show("Las contraseñas no coinciden.", "Error de Contraseña", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -231,7 +317,7 @@ namespace SistemaPV.View
             // 2. Lógica de decisión 
             try
             {
-                
+
                 if (this.usuarioId == null)
                 {
                     GuardarNuevoUsuario();
@@ -247,7 +333,7 @@ namespace SistemaPV.View
             }
             catch (SqlException sqlEx)
             {
-                
+
                 if (sqlEx.Number != 2627 && sqlEx.Number != 2601)
                 {
                     MessageBox.Show("Error de base de datos: " + sqlEx.Message, "Error SQL", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -255,11 +341,11 @@ namespace SistemaPV.View
             }
             catch (Exception ex)
             {
-               
+
                 MessageBox.Show("Error inesperado: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            
+
         }
 
         // --- PASO 3: Lógica de Cancelar ---

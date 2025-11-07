@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Venta" Height="550" Width="1000">
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen"
+        Title="Venta" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -15,8 +17,8 @@
         <!-- Panel Izquierdo -->
         <StackPanel Grid.Column="0" Background="#FFEAEAEA" Margin="5">
             <Label Content="SISTEMA : PUNTO DE VENTA" FontWeight="Bold" Margin="5"/>
-            <Label Content="Usuario : Cajero" Margin="5,0,5,0"/>
-         
+            <Label Content="Usuario : Cajero" FontWeight="Bold" Margin="5,0,5,0"/>
+           
 
             <RadioButton Content="Hacer Venta" IsChecked="True" GroupName="Navegacion" Margin="10,5"
                          Checked="RbVenta_Checked"/>
