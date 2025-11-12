@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SistemaPV.View"
         mc:Ignorable="d"
-        Title="Agregar Nuevo Producto" 
+        Title="{Binding Titulo}" 
         SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
@@ -24,20 +24,28 @@
         </Grid.RowDefinitions>
 
         <Label Content="Nombre:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtNombre" Grid.Row="0" Grid.Column="1" Margin="5" MaxLength="150"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" MaxLength="150"
+                 Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Label Content="Precio:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtPrecio" Grid.Row="1" Grid.Column="1" Margin="5" PreviewTextInput="TxtPrecio_PreviewTextInput"/>
+        <TextBox x:Name="txtPrecio" Grid.Row="1" Grid.Column="1" Margin="5" 
+                 Text="{Binding Precio, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewTextInput="TxtPrecio_PreviewTextInput"/>
 
         <Label Content="Stock:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtStock" Grid.Row="2" Grid.Column="1" Margin="5" PreviewTextInput="TxtStock_PreviewTextInput"/>
+        <TextBox x:Name="txtStock" Grid.Row="2" Grid.Column="1" Margin="5" 
+                 Text="{Binding Stock, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewTextInput="TxtStock_PreviewTextInput"/>
 
         <Label Content="Descripción:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtDescripcion" Grid.Row="3" Grid.Column="1" Margin="5" Height="60" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="500"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Height="60" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="500"
+                 Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="btnGuardar" Content="Guardar" Width="80" Margin="5" Padding="5" Click="BtnGuardar_Click" IsDefault="True"/>
-            <Button x:Name="btnCancelar" Content="Cancelar" Width="80" Margin="5" Padding="5" Click="BtnCancelar_Click" IsCancel="True"/>
+            <Button Content="{Binding BotonGuardarTexto}" Width="80" Margin="5" Padding="5" IsDefault="True"
+                    Command="{Binding GuardarCommand}"/>
+            <Button Content="Cancelar" Width="80" Margin="5" Padding="5" IsCancel="True"
+                    Command="{Binding CancelarCommand}"/>
         </StackPanel>
 
     </Grid>

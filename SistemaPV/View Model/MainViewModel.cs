@@ -49,7 +49,7 @@ namespace SistemaPV.View_Model
             else
             {
                 CurrentUserAccount.DisplayName = "Invalid user, not logged in";
-                //Hide child views.
+                
             }
         }
     }

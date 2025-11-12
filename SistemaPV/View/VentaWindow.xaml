@@ -18,7 +18,6 @@
         <StackPanel Grid.Column="0" Background="#FFEAEAEA" Margin="5">
             <Label Content="SISTEMA : PUNTO DE VENTA" FontWeight="Bold" Margin="5"/>
             <Label Content="Usuario : Cajero" FontWeight="Bold" Margin="5,0,5,0"/>
-           
 
             <RadioButton Content="Hacer Venta" IsChecked="True" GroupName="Navegacion" Margin="10,5"
                          Checked="RbVenta_Checked"/>
@@ -38,15 +37,29 @@
                 <StackPanel Orientation="Horizontal" Margin="5">
                     <Label Content="Productos disponibles:" FontWeight="Bold" VerticalAlignment="Center"/>
                     <ComboBox x:Name="cbProductos" Width="250" Margin="10,0" IsEditable="True"
-                              TextSearch.TextPath="Nombre"/>
+                              TextSearch.TextPath="Nombre"
+                              PreviewKeyDown="CbProductos_PreviewKeyDown"
+                              SelectionChanged="CbProductos_SelectionChanged"
+                              KeyUp="CbProductos_KeyUp"/>
                     <Label Content="Cantidad:" VerticalAlignment="Center"/>
-                    <TextBox x:Name="txtCantidad" Width="80" Margin="10,0"/>
+
+                    <!-- CONTROL NUMÉRICO CON BOTONES +/- -->
+                    <StackPanel Orientation="Horizontal" Margin="10,0" VerticalAlignment="Center">
+                        <Button x:Name="btnDecrementar" Content="-" Width="25" 
+                                Click="BtnDecrementar_Click" FontWeight="Bold"/>
+                        <TextBox x:Name="txtCantidad" Text="1" Width="40" TextAlignment="Center"
+                                 PreviewTextInput="TxtCantidad_PreviewTextInput"/>
+                        <Button x:Name="btnIncrementar" Content="+" Width="25"
+                                Click="BtnIncrementar_Click" FontWeight="Bold"/>
+                    </StackPanel>
+
                     <Button x:Name="btnAgregarProducto" Content="Agregar" Padding="5,2" Margin="10,0"
                             Click="BtnAgregarProducto_Click"/>
                 </StackPanel>
 
-                <DataGrid x:Name="dgvVenta" Margin="5" Height="400"
-                          AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid x:Name="dgvVenta" Margin="5" Height="350"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="No." Binding="{Binding Numero}" Width="50"/>
                         <DataGridTextColumn Header="Producto" Binding="{Binding Nombre}" Width="*"/>
@@ -55,32 +68,78 @@
                         <DataGridTextColumn Header="Monto Parcial $" Binding="{Binding Subtotal, StringFormat=F2}" Width="150"/>
                     </DataGrid.Columns>
                 </DataGrid>
+
+                <!-- BOTÓN QUITAR PRODUCTO -->
+                <Button x:Name="btnQuitarProducto" Content="Quitar Producto Seleccionado" 
+                        Width="180" Height="30" Margin="5" HorizontalAlignment="Right"
+                        Click="BtnQuitarProducto_Click"/>
             </StackPanel>
 
             <!-- Panel de Historial de Ventas -->
-            <DataGrid x:Name="dgvHistorial" Margin="5" Height="450"
-                      AutoGenerateColumns="False" IsReadOnly="True"
-                      Visibility="Collapsed">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID VENTA" Binding="{Binding ID_VENTA}" Width="80"/>
-                    <DataGridTextColumn Header="FECHA" Binding="{Binding FECHA_VENTA, StringFormat=dd/MM/yyyy HH:mm}" Width="120"/>
-                    <DataGridTextColumn Header="TOTAL $" Binding="{Binding MONTO_TOTAL, StringFormat=F2}" Width="100"/>
-                    <DataGridTextColumn Header="PRODUCTOS" Binding="{Binding CANTIDAD_PRODUCTOS}" Width="80"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <StackPanel x:Name="panelHistorial" Visibility="Collapsed">
+                <DataGrid x:Name="dgvHistorial" Margin="5" Height="350"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          CanUserAddRows="False"
+                          HorizontalScrollBarVisibility="Disabled"
+                          SelectionMode="Single"
+                          SelectionChanged="DgvHistorial_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID VENTA" Binding="{Binding ID_VENTA}" Width="80"/>
+                        <DataGridTextColumn Header="FECHA" Binding="{Binding FECHA_VENTA, StringFormat=dd/MM/yyyy HH:mm}" Width="120"/>
+                        <DataGridTextColumn Header="CAJERO" Binding="{Binding CAJERO}" Width="150"/>
+                        <DataGridTextColumn Header="PRODUCTOS" Binding="{Binding CANTIDAD_PRODUCTOS}" Width="80"/>
+                        <DataGridTextColumn Header="MÉTODO DE PAGO" Binding="{Binding METODO_PAGO}" Width="120"/>
+                        <DataGridTextColumn Header="TOTAL $" Binding="{Binding MONTO_TOTAL, StringFormat=F2}" Width="100"/>
+                        <DataGridTextColumn Header="ESTADO VENTA" Binding="{Binding ESTADO_VENTA}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- DETALLES DE PRODUCTOS DE LA VENTA SELECCIONADA -->
+                <StackPanel Margin="5" Background="#FFF0F0F0" Visibility="Collapsed" x:Name="panelDetallesVenta">
+                    <Label Content="Productos de la Venta:" FontWeight="Bold" Margin="0,5,0,5"/>
+                    <DataGrid x:Name="dgvDetallesVenta" Height="150"
+                              AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Producto" Binding="{Binding NOMBRE_PRODUCTO}" Width="*"/>
+                            <DataGridTextColumn Header="Cantidad" Binding="{Binding CANTIDAD}" Width="80"/>
+                            <DataGridTextColumn Header="Precio Unitario al vender $" Binding="{Binding PRECIO_UNITARIO, StringFormat=F2}" Width="120"/>
+                            <DataGridTextColumn Header="Subtotal $" Binding="{Binding SUBTOTAL, StringFormat=F2}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+                    <Button x:Name="btnCancelarVentaHistorial" Content="Cancelar Venta" 
+                            Width="120" Height="30" Margin="5"
+                            Click="BtnCancelarVentaHistorial_Click"/>
+                    <Button x:Name="btnVerDetalles" Content="Ver Detalles" 
+                            Width="100" Height="30" Margin="5"
+                            Click="BtnVerDetalles_Click"/>
+                </StackPanel>
+            </StackPanel>
 
             <!-- Panel de Inventario -->
-            <DataGrid x:Name="dgvInventario" Margin="5" Height="450"
-                      AutoGenerateColumns="False" IsReadOnly="True"
-                      Visibility="Collapsed">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding ID_PRODUCTO}" Width="60"/>
-                    <DataGridTextColumn Header="NOMBRE" Binding="{Binding NOMBRE_PRODUCTO}" Width="*"/>
-                    <DataGridTextColumn Header="PRECIO" Binding="{Binding PRECIO, StringFormat=F2}" Width="80"/>
-                    <DataGridTextColumn Header="STOCK" Binding="{Binding CANTIDAD_STOCK}" Width="60"/>
-                    <DataGridTextColumn Header="DESCRIPCIÓN" Binding="{Binding DESCRIPCION}" Width="200"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <StackPanel x:Name="panelInventario" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Margin="5" VerticalAlignment="Top">
+                    <Label Content="Buscar producto:" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBox x:Name="txtBuscarInventario" Width="300" Margin="10,0" 
+                             TextChanged="TxtBuscarInventario_TextChanged"
+                             VerticalAlignment="Center"/>
+                    <Button x:Name="btnLimpiarBusqueda" Content="Limpiar" Width="80" Margin="10,0" Padding="5,2"
+                            Click="BtnLimpiarBusqueda_Click" VerticalAlignment="Center"/>
+                </StackPanel>
+                <DataGrid x:Name="dgvInventario" Margin="5" 
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          VerticalAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding ID_PRODUCTO}" Width="60"/>
+                        <DataGridTextColumn Header="NOMBRE" Binding="{Binding NOMBRE_PRODUCTO}" Width="*"/>
+                        <DataGridTextColumn Header="PRECIO" Binding="{Binding PRECIO, StringFormat=F2}" Width="80"/>
+                        <DataGridTextColumn Header="STOCK" Binding="{Binding CANTIDAD_STOCK}" Width="60"/>
+                        <DataGridTextColumn Header="DESCRIPCIÓN" Binding="{Binding DESCRIPCION}" Width="200"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
         </Grid>
 
         <!-- Panel Derecho -->
@@ -88,13 +147,16 @@
             <Label Content="Fecha :" Foreground="White" FontWeight="Bold" Margin="10"/>
             <Calendar x:Name="calendarioFecha" Margin="10"/>
 
-            <Label Content="Monto Total :" Foreground="White" FontWeight="Bold" Margin="10,20,10,0"/>
-            <TextBlock x:Name="txtTotal" Text="$ 0.00" Foreground="White" FontSize="24"
-                       FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+            <!-- Espacio adicional para bajar el monto total y botones -->
+            <StackPanel Margin="0,190,0,0">
+                <Label Content="Monto Total :" Foreground="White" FontWeight="Bold" Margin="10,20,10,0"/>
+                <TextBlock x:Name="txtTotal" Text="$ 0.00" Foreground="White" FontSize="24"
+                           FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,20">
-                <Button x:Name="btnCancelar" Content="Cancelar" Width="100" Margin="5" Padding="5" Click="BtnCancelar_Click"/>
-                <Button x:Name="btnProceder" Content="Proceder" Width="100" Margin="5" Padding="5" Click="BtnProceder_Click"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,30">
+                    <Button x:Name="btnCancelar" Content="Cancelar" Width="100" Margin="5" Padding="5" Click="BtnCancelar_Click"/>
+                    <Button x:Name="btnProceder" Content="Proceder" Width="100" Margin="5" Padding="5" Click="BtnProceder_Click"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -36,7 +36,7 @@ namespace SistemaPV.Repositories
         public string GetRoleByUsername(string username)
         {
             string role = null;
-            using (var connection = GetConnection()) // Usa la conexión que ya tienes (de RepositoryBase)
+            using (var connection = GetConnection()) 
             {
                 connection.Open();
                 string query = @"SELECT R.NOMBRE_ROL 
@@ -48,10 +48,10 @@ namespace SistemaPV.Repositories
                 {
                     command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar).Value = username;
 
-                    var result = command.ExecuteScalar(); // Pide un solo valor
+                    var result = command.ExecuteScalar(); 
                     if (result != null)
                     {
-                        role = result.ToString(); // ¡Encontramos el rol!
+                        role = result.ToString();
                     }
                 }
             }
