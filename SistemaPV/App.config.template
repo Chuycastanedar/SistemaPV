@@ -2,7 +2,7 @@
 <configuration>
 
 	<connectionStrings>
-		<add name="MiConexionDB"
+		<add name="MiConexion"
              connectionString="Data Source=AQUI_VA_TU_SERVIDOR_LOCAL;Initial Catalog=PuntoDeVentaDB;Integrated Security=True"
              providerName="System.Data.SqlClient" />
 	</connectionStrings>
