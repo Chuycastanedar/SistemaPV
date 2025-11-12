@@ -12,6 +12,22 @@ namespace SistemaPV.Repositories
 {
     public class UserRepository : RepositoryBase, IUserRepository
     {
+        public int GetIdByUsername(string username)
+        {
+            using (var connection = GetConnection())
+            using (var command = new SqlCommand("SELECT ID_USUARIO FROM USUARIO WHERE NOMBRE_USUARIO = @username", connection))
+            {
+                connection.Open();
+                command.Parameters.AddWithValue("@username", username);
+                object result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    return (int)result;
+                }
+            }
+            return -1; // O lanza una excepción, pero -1 es más seguro.
+        }
+
         public void Add(UserModel userModel)
         {
             throw new NotImplementedException();

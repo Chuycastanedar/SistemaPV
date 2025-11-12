@@ -14,12 +14,17 @@ namespace SistemaPV.View
 
             
             IDialogService dialogService = new DialogService();
-
-            
             var viewModel = new InventarioViewModel(dialogService);
 
-            
+            viewModel.RequestLogout += OnRequestLogout;
+
             this.DataContext = viewModel;
+        }
+
+        private void OnRequestLogout()
+        {
+            ((App)Application.Current).NavigateToLogin();
+            this.Close();
         }
     }
 }

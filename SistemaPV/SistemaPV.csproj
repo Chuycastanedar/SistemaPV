@@ -66,6 +66,7 @@
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\IUserRepository.cs" />
+    <Compile Include="Model\MetodoPago.cs" />
     <Compile Include="Model\Producto.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\UserAccountModel.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="View Model\InventarioViewModel.cs" />
     <Compile Include="View Model\LoginViewModel.cs" />
     <Compile Include="View Model\MainViewModel.cs" />
+    <Compile Include="View Model\PagarVentaViewModel.cs" />
     <Compile Include="View Model\VentaViewModel.cs" />
     <Compile Include="View Model\ViewModelBase.cs" />
     <Compile Include="View Model\ViewModelCommand.cs" />
@@ -101,6 +103,9 @@
     </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PagarVentaView.xaml.cs">
+      <DependentUpon>PagarVentaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\VentaWindow.xaml.cs">
       <DependentUpon>VentaWindow.xaml</DependentUpon>
@@ -126,6 +131,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PagarVentaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

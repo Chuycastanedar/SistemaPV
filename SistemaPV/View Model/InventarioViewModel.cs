@@ -76,6 +76,8 @@ namespace SistemaPV.View_Model
             set { _panelBotonesUsuariosVisibility = value; OnPropertyChanged(nameof(PanelBotonesUsuariosVisibility)); }
         }
 
+        public event Action RequestLogout;
+
         // --- Comandos ---
         public ViewModelCommand WindowLoadedCommand { get; private set; } 
         public ViewModelCommand ShowInventarioCommand { get; private set; }
@@ -320,7 +322,7 @@ namespace SistemaPV.View_Model
 
             if (result == MessageBoxResult.Yes)
             {
-                Application.Current.Shutdown();
+                RequestLogout?.Invoke();
             }
             
         }
