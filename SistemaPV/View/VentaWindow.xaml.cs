@@ -6,13 +6,22 @@ namespace SistemaPV.View
 {
     public partial class VentaWindow : Window
     {
-        public VentaWindow()
+        public VentaWindow(int idUsuario)
         {
-            InitializeComponent();
-
+            
+            var viewModel = new VentaViewModel(idUsuario);
+            viewModel.RequestLogout += OnRequestLogout;
             // Asignar el DataContext
-            this.DataContext = new VentaViewModel();
+            this.DataContext = viewModel;
+            InitializeComponent();
         }
+
+        private void OnRequestLogout()
+        {
+            ((App)Application.Current).NavigateToLogin();
+            this.Close();
+        }
+
 
         // Validar que solo se ingresen números
         private void TxtCantidad_PreviewTextInput(object sender, TextCompositionEventArgs e)

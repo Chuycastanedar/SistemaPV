@@ -107,8 +107,14 @@ namespace SistemaPV.View_Model
             var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
             if (isValidUser)
             {
+                // Obtenemos el Rol
                 string role = userRepository.GetRoleByUsername(Username);
                 App.RoleDelUsuarioLogueado = role;
+
+                // Obtenemos el ID
+                int id = userRepository.GetIdByUsername(Username);
+                App.IdDelUsuarioLogueado = id;
+
                 Thread.CurrentPrincipal = new GenericPrincipal(
                     new GenericIdentity(Username), null);
                 IsViewVisible = false;

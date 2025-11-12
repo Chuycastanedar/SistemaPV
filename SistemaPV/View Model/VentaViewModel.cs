@@ -1,13 +1,13 @@
-﻿using System;
+﻿using SistemaPV.Model;
+using SistemaPV.Repositories;
+using SistemaPV.View;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using SistemaPV.Model;
-using SistemaPV.Repositories;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 
 namespace SistemaPV.View_Model
@@ -16,6 +16,7 @@ namespace SistemaPV.View_Model
     {
         // --- Campos ---
         private readonly VentaRepository _repository;
+        private readonly int _loggedInUserId;
         private List<Producto> _masterProductosLista;
         private List<Producto> _masterInventarioLista; 
 
@@ -147,6 +148,8 @@ namespace SistemaPV.View_Model
         }
 
 
+        public event Action RequestLogout;
+
         // --- Comandos ---
         public ViewModelCommand WindowLoadedCommand { get; private set; }
         public ViewModelCommand CerrarSesionCommand { get; private set; }
@@ -177,9 +180,10 @@ namespace SistemaPV.View_Model
 
 
         // --- Constructor ---
-        public VentaViewModel()
+        public VentaViewModel(int idUsuario)
         {
             _repository = new VentaRepository();
+            _loggedInUserId = idUsuario;
             _masterProductosLista = new List<Producto>();
             _masterInventarioLista = new List<Producto>();
 
@@ -267,8 +271,11 @@ namespace SistemaPV.View_Model
             }
             else
             {
+                // Copiamos la lógica exacta de FiltrarInventario()
+                string filtro = TextoBusquedaProducto.Trim();
                 var filtrados = _masterProductosLista
-                    .Where(p => p.NOMBRE_PRODUCTO.IndexOf(TextoBusquedaProducto, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .Where(p => (p.NOMBRE_PRODUCTO != null && p.NOMBRE_PRODUCTO.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                (p.DESCRIPCION != null && p.DESCRIPCION.IndexOf(filtro, StringComparison.OrdinalIgnoreCase) >= 0)) // <--- ¡AQUÍ ESTÁ LA MAGIA!
                     .ToList();
                 ProductosFiltradosCombo = new ObservableCollection<Producto>(filtrados);
             }
@@ -422,23 +429,52 @@ namespace SistemaPV.View_Model
                 return;
             }
 
+            // Calculamos el total para pasarlo a la ventana de pago
+            decimal totalActualVenta = Carrito.Sum(i => i.Subtotal);
+
+            var pagarVentaViewModel = new PagarVentaViewModel(totalActualVenta);
+            var pagarVentaWindow = new PagarVentaView(pagarVentaViewModel); 
+            pagarVentaWindow.Owner = Application.Current.MainWindow; 
+
+            bool? dialogResult = pagarVentaWindow.ShowDialog();
+
+            if (dialogResult != true)
+            {
+                return; 
+            }
+
+            int metodoPagoId = pagarVentaViewModel.SelectedMetodoPagoId;
+
             try
             {
-                bool success = _repository.RegistrarVenta(Carrito.ToList(), FechaVenta.Value);
+                // FECHA del calendario
+                DateTime fechaDeCalendario = FechaVenta.Value.Date;
+                // HORA actual
+                TimeSpan horaActual = DateTime.Now.TimeOfDay;
+
+                DateTime fechaYHoraCorrecta = fechaDeCalendario + horaActual;
+
+                bool success = _repository.RegistrarVenta(Carrito.ToList(), fechaYHoraCorrecta, _loggedInUserId, metodoPagoId);
+
                 if (success)
                 {
-                    MessageBox.Show("Venta registrada exitosamente.");
-                    // Limpiar todo
+                    MessageBox.Show("Venta registrada exitosamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
                     Carrito.Clear();
                     CalcularTotal();
                     CantidadVenta = "1";
-                    // No recargamos productos porque el stock ya se actualizó en la BD
-                    // La lista local _masterProductosLista ya se actualizó al agregar/quitar
+
+                    // Recargar los productos para actualizar stock y el historial de ventas
+                    OnWindowLoaded(null); // Recarga los productos (stock)
+                    if (PanelHistorialVisibility == Visibility.Visible)
+                    {
+                        CargarHistorialVentas();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al registrar la venta: " + ex.Message);
+                MessageBox.Show("Error al registrar la venta: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 // Si la venta falla, debemos devolver el stock a la lista local
                 OnCancelarVenta(null);
             }
@@ -557,7 +593,7 @@ namespace SistemaPV.View_Model
 
             if (result == MessageBoxResult.Yes)
             {
-                Application.Current.Shutdown();
+                RequestLogout?.Invoke();
             }
         }
     }

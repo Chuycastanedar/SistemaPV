@@ -115,8 +115,30 @@ namespace SistemaPV.Repositories
             return detalles;
         }
 
-        
-        public bool RegistrarVenta(List<VentaDetalleItem> carrito, DateTime fecha)
+        public List<MetodoPago> GetMetodosPago()
+        {
+            var metodos = new List<MetodoPago>();
+            string query = "SELECT ID_METODO, NOMBRE_METODO FROM METODO_PAGO";
+
+            using (var connection = GetConnection())
+            using (var adapter = new SqlDataAdapter(query, connection))
+            {
+                var dtMetodos = new DataTable();
+                adapter.Fill(dtMetodos);
+
+                foreach (DataRow row in dtMetodos.Rows)
+                {
+                    metodos.Add(new MetodoPago
+                    {
+                        ID_METODO = (int)row["ID_METODO"],
+                        NOMBRE_METODO = row["NOMBRE_METODO"].ToString()
+                    });
+                }
+            }
+            return metodos;
+        }
+
+        public bool RegistrarVenta(List<VentaDetalleItem> carrito, DateTime fecha, int idUsuarioLogueado, int idMetodoPago)
         {
             using (var conn = GetConnection())
             {
@@ -125,9 +147,7 @@ namespace SistemaPV.Repositories
 
                 try
                 {
-                    
-                    int idUsuario = 1;
-                    int idMetodo = 1;
+
                     int idEstadoVenta = 1;
 
                     string insertVenta = @"INSERT INTO VENTA (FECHA_VENTA, MONTO_TOTAL, ID_USUARIO, ID_METODO, ID_ESTADO_VENTA) 
@@ -137,8 +157,8 @@ namespace SistemaPV.Repositories
                     var cmdVenta = new SqlCommand(insertVenta, conn, transaction);
                     cmdVenta.Parameters.AddWithValue("@fecha", fecha);
                     cmdVenta.Parameters.AddWithValue("@total", carrito.Sum(c => c.Subtotal));
-                    cmdVenta.Parameters.AddWithValue("@idUsuario", idUsuario);
-                    cmdVenta.Parameters.AddWithValue("@idMetodo", idMetodo);
+                    cmdVenta.Parameters.AddWithValue("@idUsuario", idUsuarioLogueado);
+                    cmdVenta.Parameters.AddWithValue("@idMetodo", idMetodoPago);
                     cmdVenta.Parameters.AddWithValue("@idEstado", idEstadoVenta);
 
                     int idVenta = (int)cmdVenta.ExecuteScalar();
@@ -167,12 +187,13 @@ namespace SistemaPV.Repositories
                 catch (Exception)
                 {
                     transaction.Rollback();
-                    throw; // Relanza la excepción para que el ViewModel la atrape
+                    throw;
                 }
             }
         }
 
-        
+
+
         public bool CancelarVenta(int idVenta)
         {
             using (var conn = GetConnection())
