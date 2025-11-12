@@ -16,6 +16,7 @@ namespace SistemaPV.Model
         UserModel GetById(int id);
         UserModel GetByUsername(string username);
         IEnumerable<UserModel> GetByAll();
+        string GetRoleByUsername(string username);
         //...
     }
 }

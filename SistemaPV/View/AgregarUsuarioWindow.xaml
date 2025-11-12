@@ -1,11 +1,23 @@
 ﻿<Window x:Class="SistemaPV.View.AgregarUsuarioWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Agregar Nuevo Usuario" 
+        xmlns:local="clr-namespace:SistemaPV.View" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        Title="{Binding Titulo}" 
         SizeToContent="WidthAndHeight" 
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
-        Loaded="Window_Loaded">
+        ResizeMode="NoResize">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.Resources>
+        <local:PasswordBoxConverter x:Key="PasswordBoxConverter"/>
+    </Window.Resources>
+
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -18,44 +30,64 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition x:Name="rowPassword" Height="Auto"/>
-            <RowDefinition x:Name="rowPasswordConfirm" Height="Auto"/>
+            <RowDefinition Height="{Binding RowPasswordHeight}"/>
+            <RowDefinition Height="{Binding RowPasswordConfirmHeight}"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Label Content="Nombre:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtNombre" Grid.Row="0" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtNombre" Grid.Row="0" Grid.Column="1" Margin="5" MaxLength="50" 
+                 Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewTextInput="TxtSoloLetras_PreviewTextInput"/>
 
         <Label Content="Apellido Paterno:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtAPaterno" Grid.Row="1" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtAPaterno" Grid.Row="1" Grid.Column="1" Margin="5" MaxLength="50" 
+                 Text="{Binding APaterno, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewTextInput="TxtSoloLetras_PreviewTextInput"/>
 
         <Label Content="Apellido Materno:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtAMaterno" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtAMaterno" Grid.Row="2" Grid.Column="1" Margin="5" MaxLength="50" 
+                 Text="{Binding AMaterno, UpdateSourceTrigger=PropertyChanged}"
+                 PreviewTextInput="TxtSoloLetras_PreviewTextInput"/>
 
         <Label Content="Rol de Usuario:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <ComboBox x:Name="cmbRol" Grid.Row="3" Grid.Column="1" Margin="5"/>
+        <ComboBox Grid.Row="3" Grid.Column="1" Margin="5"
+                  ItemsSource="{Binding Roles}"
+                  SelectedItem="{Binding SelectedRol}"
+                  DisplayMemberPath="NOMBRE_ROL"
+                  SelectedValuePath="ID_ROL"/>
+
         <Separator Grid.Row="4" Grid.ColumnSpan="2" Margin="0,10"/>
 
-
         <Label Content="Nombre de Usuario:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <TextBox x:Name="txtNombreUsuario" Grid.Row="5" Grid.Column="1" Margin="5"/>
+        <TextBox x:Name="txtNombreUsuario" Grid.Row="5" Grid.Column="1" Margin="5" MaxLength="50" 
+                 Text="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}"
+                 IsEnabled="{Binding IsNombreUsuarioEnabled}"
+                 PreviewTextInput="TxtNombreUsuario_PreviewTextInput"/>
 
-        <Label x:Name="lblPassword" Content="Contraseña:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <PasswordBox x:Name="txtPassword" Grid.Row="6" Grid.Column="1" Margin="5"/>
+        <Label Content="Contraseña:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="5"
+               Visibility="{Binding PasswordFieldsVisibility}"/>
+        <PasswordBox x:Name="txtPassword" Grid.Row="6" Grid.Column="1" Margin="5" MaxLength="50"
+                     Visibility="{Binding PasswordFieldsVisibility}"/>
 
-        <Label x:Name="lblPasswordConfirm" Content="Confirmar Contraseña:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-        <PasswordBox x:Name="txtPasswordConfirm" Grid.Row="7" Grid.Column="1" Margin="5"/>
+        <Label Content="Confirmar Contraseña:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="5"
+               Visibility="{Binding PasswordFieldsVisibility}"/>
+        <PasswordBox x:Name="txtPasswordConfirm" Grid.Row="7" Grid.Column="1" Margin="5" MaxLength="50"
+                     Visibility="{Binding PasswordFieldsVisibility}"/>
 
         <StackPanel Grid.Row="8" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button x:Name="btnGuardar" Content="Guardar" Width="80" Margin="5" Padding="5" Click="BtnGuardar_Click" IsDefault="True"/>
-            <Button x:Name="btnCancelar" Content="Cancelar" Width="80" Margin="5" Padding="5" Click="BtnCancelar_Click" IsCancel="True"/>
+            <Button Content="{Binding BotonGuardarTexto}" Width="80" Margin="5" Padding="5" IsDefault="True"
+                    Command="{Binding GuardarCommand}">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource PasswordBoxConverter}">
+                        <Binding ElementName="txtPassword"/>
+                        <Binding ElementName="txtPasswordConfirm"/>
+                    </MultiBinding>
+                </Button.CommandParameter>
+            </Button>
+            <Button Content="Cancelar" Width="80" Margin="5" Padding="5" IsCancel="True"
+                    Command="{Binding CancelarCommand}"/>
         </StackPanel>
-        
-        
 
     </Grid>
 </Window>

@@ -4,8 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SistemaPV.View"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="Inventario" Height="450" Width="900">
+        Title="Inventario" 
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -15,33 +25,43 @@
 
         <StackPanel Grid.Column="0" Background="#FFEAEAEA" Margin="5">
             <Label Content="SISTEMA: PUNTO DE VENTA" FontWeight="Bold" Margin="5"/>
-            <Label Content="Usuario: admin" Margin="5,0,5,0"/>
-            <Label Content="Administrador" FontWeight="Bold" Margin="5,0,5,20"/>
+            <Label Content="Usuario : Administrador" FontWeight="Bold" Margin="5,0,5,0"/>
 
             <RadioButton Content="Inventario" IsChecked="True" GroupName="Navegacion" Margin="10,5"
-                         Checked="RbInventario_Checked"/>
+                         Command="{Binding ShowInventarioCommand}"/>
             <RadioButton Content="Administrar Usuarios" GroupName="Navegacion" Margin="10,5"
-                         Checked="RbUsuarios_Checked"/>
+                         Command="{Binding ShowUsuariosCommand}"/>
 
-            <Button Content="Cerrar sesión" VerticalAlignment="Bottom" Margin="10" Padding="5"/>
+            <Button Content="Cerrar sesión" VerticalAlignment="Bottom" Margin="10" Padding="5"
+                    Command="{Binding CerrarSesionCommand}"/>
         </StackPanel>
 
-        <StackPanel x:Name="panelBotonesProductos" Grid.Column="2" Background="#FF4A4AFF" Margin="5">
-            <Button x:Name="btnAgregar" Content="Agregar Producto" Margin="10" Padding="10" Click="BtnAgregar_Click"/>
-            <Button x:Name="btnEliminar" Content="Eliminar Producto" Margin="10" Padding="10" Click="BtnEliminar_Click"/>
-            <Button x:Name="btnEditar" Content="Editar Producto" Margin="10" Padding="10" Click="BtnEditar_Click"/>
+        <StackPanel Grid.Column="2" Background="#FF4A4AFF" Margin="5"
+                    Visibility="{Binding PanelBotonesProductosVisibility}">
+            <Button Content="Agregar Producto" Margin="10" Padding="10" 
+                    Command="{Binding AgregarProductoCommand}"/>
+            <Button Content="Eliminar Producto" Margin="10" Padding="10" 
+                    Command="{Binding EliminarProductoCommand}"/>
+            <Button Content="Editar Producto" Margin="10" Padding="10" 
+                    Command="{Binding EditarProductoCommand}"/>
         </StackPanel>
 
-        <StackPanel x:Name="panelBotonesUsuarios" Grid.Column="2" Background="#FF4A4AFF" Margin="5"
-                    Visibility="Collapsed">
-            <Button x:Name="btnAgregarUsuario" Content="Agregar Usuario" Margin="10" Padding="10" Click="BtnAgregarUsuario_Click"/>
-            <Button x:Name="btnEliminarUsuario" Content="Eliminar Usuario" Margin="10" Padding="10" Click="BtnEliminarUsuario_Click"/>
-            <Button x:Name="btnEditarUsuario" Content="Editar Usuario" Margin="10" Padding="10" Click="BtnEditarUsuario_Click"/> 
+        <StackPanel Grid.Column="2" Background="#FF4A4AFF" Margin="5"
+                    Visibility="{Binding PanelBotonesUsuariosVisibility}">
+            <Button Content="Agregar Usuario" Margin="10" Padding="10" 
+                    Command="{Binding AgregarUsuarioCommand}"/>
+            <Button Content="Eliminar Usuario" Margin="10" Padding="10" 
+                    Command="{Binding EliminarUsuarioCommand}"/>
+            <Button Content="Editar Usuario" Margin="10" Padding="10" 
+                    Command="{Binding EditarUsuarioCommand}"/>
         </StackPanel>
 
-        <DataGrid x:Name="dgvInventario" Grid.Column="1" Margin="5,5,195,5"
+        <DataGrid Grid.Column="1" Margin="5,5,195,5" Grid.ColumnSpan="2"
+                  ItemsSource="{Binding Productos}"
+                  SelectedItem="{Binding SelectedProducto}"
+                  Visibility="{Binding InventarioVisibility}"
                   AutoGenerateColumns="False" IsReadOnly="True"
-                  SelectionMode="Single" Grid.ColumnSpan="2">
+                  SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID_PRODUCTO}" Width="100"/>
                 <DataGridTextColumn Header="NOMBRE" Binding="{Binding NOMBRE_PRODUCTO}" Width="*"/>
@@ -51,10 +71,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid x:Name="dgvUsuarios" Grid.Column="1" Margin="5"
+        <DataGrid Grid.Column="1" Margin="5"
+                  ItemsSource="{Binding Usuarios}"
+                  SelectedItem="{Binding SelectedUsuario}"
+                  Visibility="{Binding UsuariosVisibility}"
                   AutoGenerateColumns="False" IsReadOnly="True"
-                  SelectionMode="Single"
-                  Visibility="Collapsed">
+                  SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID_USUARIO}" Width="50"/>
                 <DataGridTextColumn Header="USUARIO" Binding="{Binding NOMBRE_USUARIO}" Width="*"/>

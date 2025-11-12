@@ -14,16 +14,34 @@ namespace SistemaPV
     /// </summary>
     public partial class App : Application
     {
+        public static string RoleDelUsuarioLogueado { get; set; }
         protected void ApplicationStart(object sender, StartupEventArgs e)
         {
             var loginView = new LoginView();
             loginView.Show();
+
             loginView.IsVisibleChanged += (s, ev) =>
             {
+                
                 if (loginView.IsVisible == false && loginView.IsLoaded)
                 {
-                    var mainView = new MainView();
-                    mainView.Show();
+                    string role = App.RoleDelUsuarioLogueado;
+
+                    if (role == "Administrador")
+                    {
+                        Inventario inventario = new Inventario();
+                        inventario.Show();
+                    }
+                    else if (role == "Cajero")
+                    {
+                        VentaWindow venta = new VentaWindow();
+                        venta.Show();
+                    }
+                    else
+                    {                        
+                        MessageBox.Show("Rol de usuario no reconocido.");
+                    }
+
                     loginView.Close();
                 }
             };

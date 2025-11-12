@@ -33,6 +33,31 @@ namespace SistemaPV.Repositories
             return validUser;
         }
 
+        public string GetRoleByUsername(string username)
+        {
+            string role = null;
+            using (var connection = GetConnection()) 
+            {
+                connection.Open();
+                string query = @"SELECT R.NOMBRE_ROL 
+                         FROM USUARIO U
+                         JOIN ROL R ON U.ID_ROL = R.ID_ROL
+                         WHERE U.NOMBRE_USUARIO = @username";
+
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add("@username", System.Data.SqlDbType.NVarChar).Value = username;
+
+                    var result = command.ExecuteScalar(); 
+                    if (result != null)
+                    {
+                        role = result.ToString();
+                    }
+                }
+            }
+            return role; // Devuelve "Administrador", "Cajero", o null
+        }
+
         public void Edit(UserModel userModel)
         {
             throw new NotImplementedException();
